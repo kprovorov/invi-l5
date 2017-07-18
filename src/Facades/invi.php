@@ -1,6 +1,6 @@
 <?php
 
-namespace Atbox\Invi\Facades;
+namespace Kprovorov\Invi\Facades;
 
 /**
  * The MIT License (MIT)

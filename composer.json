@@ -23,8 +23,8 @@
         "classmap": [
             "src/migrations"
         ],
-        "psr-0": {
-            "Atbox\\Invi\\": "src/"
+        "psr-4": {
+            "Kprovorov\\Invi\\": "src/"
         }
     },
     "minimum-stability": "stable"

@@ -1,6 +1,6 @@
 <?php
 
-namespace Atbox\Invi\Exceptions;
+namespace Kprovorov\Invi\Exceptions;
 
 use Exception;
 

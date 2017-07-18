@@ -1,6 +1,6 @@
 <?php
 
-namespace Atbox\Invi;
+namespace Kprovorov\Invi;
 
 /**
  * The MIT License (MIT)
@@ -25,7 +25,7 @@ namespace Atbox\Invi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-use Atbox\Invi\Exceptions\ExistsEmailException;
+use Kprovorov\Invi\Exceptions\ExistsEmailException;
 
 class Invi
 {
