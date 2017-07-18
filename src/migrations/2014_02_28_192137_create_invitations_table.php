@@ -37,7 +37,7 @@ class CreateInvitationsTable extends Migration {
 			$table->increments('id');
 			$table->string('code');
 			$table->string('email');
-			$table->date('expiration');
+			$table->date('expiration')->nullable();
 			$table->boolean('active');
 			$table->boolean('used')->default(false);
 			$table->string('data', 2000)->nullable();
