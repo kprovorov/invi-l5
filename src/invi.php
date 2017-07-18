@@ -38,7 +38,7 @@ class Invi
 
 
 
-	public function generate($email, $expire = null, $active = true)
+	public function generate($email, array $data = [], $expire = null, $active = true)
 	{
 		if($this->checkEmail($email))
 		{
@@ -48,6 +48,7 @@ class Invi
 				"expiration"	=> ($expire) ? Carbon::now()->modify($expire) : null,
 				"active"		=> $active,
 				"used"			=> false,
+				"data"			=> $data,
 			]);
 			return $invitation;
 		}
