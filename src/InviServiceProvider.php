@@ -34,7 +34,7 @@ class InviServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/migrations/' => database_path('migrations')
+            __DIR__.'/../migrations/' => database_path('migrations')
         ], 'migrations');
     }
 
@@ -61,4 +61,3 @@ class InviServiceProvider extends ServiceProvider
 	return array('invi');
     }
 }
-
