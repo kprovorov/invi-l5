@@ -32,12 +32,12 @@ composer update
 
 Add this to config/app.php end of providers array:
 ```php
-Atbox\Invi\InviServiceProvider::class,
+Kprovorov\Invi\InviServiceProvider::class,
 ```
 
 Add this to config/app.php end of aliases array:
 ```php
-'Invi' => Atbox\Invi\Facades\Invi::class,
+'Invi' => Kprovorov\Invi\Facades\Invi::class,
 ```
 
 Publish the migration file:
@@ -68,7 +68,7 @@ else
 Generate an invitation code
 - Arguments:
 	- email
-	- expiration date, accepts timespans like: 2 years | 2 months | 13 days | 1 hour | 23 min | 40 sec 
+	- expiration date, accepts timespans like: 2 years | 2 months | 13 days | 1 hour | 23 min | 40 sec
 	- active
 - Returns:
 	- a JSON array of all invitation information
