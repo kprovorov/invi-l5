@@ -24,6 +24,8 @@ namespace Atbox\Invi;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
+use Atbox\Invi\Exceptions\ExistsEmailException;
 
 class Invi
 {
@@ -33,59 +35,74 @@ class Invi
 		$newClass = __CLASS__;
 		return new $newClass();
 	}
-	public function generate($email,$expire,$active)
+
+
+
+	public function generate($email, $expire = null, $active = true)
 	{
 		if($this->checkEmail($email))
 		{
-			$now = strtotime("now");
-			$format = 'Y-m-d H:i:s ';
-			$expiration = date($format, strtotime('+ '.$expire, $now)); 
-			$code = Str::random(8) . $this->hash_split(hash('sha256',$email)) . $this->hash_split(hash('sha256',time())) . Str::random(8);
-			$newInvi = array(
-					"code"			=> $code,
-					"email"			=> $email,
-					"expiration"	=> $expiration,
-					"active"		=> $active,
-					"used"			=> "0"
-				);
-			Invitation::create($newInvi);
-			return json_encode($newInvi);
+			$invitation = Invitation::create([
+				"code"			=> str_random(50),
+				"email"			=> $email,
+				"expiration"	=> ($expire) ? Carbon::now()->modify($expire) : null,
+				"active"		=> $active,
+				"used"			=> false,
+			]);
+			return $invitation;
 		}
 		else
 		{
-			return json_encode(array(
-					"error" =>	"This email address has an invitation."
-				));
+			throw new ExistsEmailException('The given email already invited.');
 		}
-		
+
 	}
+
+
+
 	public function unexpire($code,$email,$expire)
 	{
 		$now = strtotime("now");
 		$format = 'Y-m-d H:i:s ';
-		$expiration = date($format, strtotime('+ '.$expire, $now)); 
+		$expiration = date($format, strtotime('+ '.$expire, $now));
 		Invitation::where('code','=',$code)->where('email','=',$email)
 				->update(array('expiration'=>$expiration));
 	}
-	public function active($code,$email)
+
+
+
+	public function active($code, $email)
 	{
-		Invitation::where('code','=',$code)->where('email','=',$email)
-				->update(array('active'=>True));
+		Invitation::where('code', $code)
+			->where('email', $email)
+			->update(array('active'=>True));
 	}
+
+
+
 	public function deactive($code,$email)
 	{
 		Invitation::where('code','=',$code)->where('email','=',$email)->update(array('active'=>False));
 	}
+
+
+
 	public function used($code,$email)
 	{
 		Invitation::where('code','=',$code)->where('email','=',$email)
 				->update(array('used'=>True));
 	}
+
+
+
 	public function unuse($code,$email)
 	{
 		Invitation::where('code','=',$code)->where('email','=',$email)
 				->update(array('used'=>False));
 	}
+
+
+
 	public function status($code,$email)
 	{
 		$temp = Invitation::where('code', '=', $code)->where('email','=',$email)
@@ -104,6 +121,9 @@ class Invi
 		else
 			return "not exist";
 	}
+
+
+
 	public function check($code,$email)
 	{
 		$temp = Invitation::where('code', '=', $code)->where('email','=',$email)
@@ -118,11 +138,17 @@ class Invi
 		else
 			return False;
 	}
+
+
+
 	public function delete($code,$email)
 	{
 		$temp = Invitation::where('code', '=', $code)->where('email','=',$email)
 					->delete();
 	}
+
+
+
 	public function emailStatus($email)
 	{
 		$temp = Invitation::where('email','=',$email)
@@ -130,8 +156,7 @@ class Invi
 		if($temp)
 		{
 			$expired = false;
-			if(strtotime("now") > strtotime($temp->expiration))
-				$expired = true;
+			if(strtotime("now") > strtotime($temp->expiration)) $expired = true;
 			$invite = array(
 					"code"			=> $temp->code,
 					"email"			=> $temp->email,
@@ -145,14 +170,15 @@ class Invi
 		else
 			return False;
 	}
+
+
+
 	protected function checkEmail($email)
 	{
-		$temp = Invitation::where('email', '=', $email)->first();
-		if($temp)
-			return False;
-		else
-			return True;
+		return (Invitation::where('email', $email)->first()) ? false : true ;
 	}
+
+
 
 	protected function hash_split($hash)
 	{

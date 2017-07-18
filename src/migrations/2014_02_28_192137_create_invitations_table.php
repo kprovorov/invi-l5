@@ -20,6 +20,7 @@
  * @link       http://atbox.io/pages/opensource
  */
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -32,17 +33,16 @@ class CreateInvitationsTable extends Migration {
 	 */
 	public function up()
 	{
-			Schema::table('invitations', function($table) {
-				$table->engine = 'InnoDB';
-				$table->create();
-				$table->increments('id')->unsigned();	
-				$table->text('code', 255);
-				$table->string('email');
-				$table->date('expiration');
-				$table->boolean('active');
-				$table->boolean('used')->default(False);
-				$table->timestamps();
-			});
+		Schema::create('invitations', function(Blueprint $table) {
+			$table->increments('id');
+			$table->string('code');
+			$table->string('email');
+			$table->date('expiration')->nullable();
+			$table->boolean('active');
+			$table->boolean('used')->default(false);
+			$table->string('data', 2000)->nullable();
+			$table->timestamps();
+		});
 	}
 
 	/**
@@ -52,9 +52,7 @@ class CreateInvitationsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('invitations', function($table) {
-			$table->drop();
-		});
+		Schema::dropIfExists('invitations');
 	}
 
 }
