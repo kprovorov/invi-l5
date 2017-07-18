@@ -131,7 +131,7 @@ class Invi
 					->first();
 		if($temp)
 		{
-			if(!$temp->active or $temp->used or strtotime("now") > strtotime($temp->expiration))
+			if(!$temp->active or $temp->used or !is_null($temp->expiration) && strtotime("now") > strtotime($temp->expiration))
 				return False;
 			else
 				return True;
