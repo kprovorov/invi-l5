@@ -25,6 +25,7 @@ namespace Atbox\Invi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Atbox\Invi\Exceptions\ExistsEmailException;
 
 class Invi
 {
@@ -52,7 +53,7 @@ class Invi
 		}
 		else
 		{
-			return false;
+			throw new ExistsEmailException('The given email already invited.');
 		}
 
 	}
