@@ -23,9 +23,12 @@ namespace Kprovorov\Invi;
  */
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Invitation extends Model
 {
+	use Notifiable;
+	
 	protected $table = 'invitations';
 	protected $fillable = array('code','email','expiration','active','used', 'data');
 
