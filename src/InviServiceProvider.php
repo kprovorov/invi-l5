@@ -1,6 +1,6 @@
 <?php
 
-namespace Atbox\Invi;
+namespace Kprovorov\Invi;
 
 /**
  * The MIT License (MIT)
