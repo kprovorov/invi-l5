@@ -27,5 +27,15 @@ use Illuminate\Database\Eloquent\Model;
 class Invitation extends Model
 {
 	protected $table = 'invitations';
-	protected $fillable = array('code','email','expiration','active','used');
+	protected $fillable = array('code','email','expiration','active','used', 'data');
+
+	public function getDataAttribute($value)
+    {
+        return unserialize($value);
+    }
+
+	public function setDataAttribute($value)
+	{
+		$this->attributes['data'] = serialize($value);
+	}
 }
